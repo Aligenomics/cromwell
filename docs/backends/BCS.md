@@ -120,6 +120,7 @@ backend {
           mounts: "oss://<test-bucket>/inputs/ /home/inputs/ false"
           dockerTag: "ubuntu/latest oss://<test-bucket>/registry/ubuntu/"
           docker: "registry.cn-shanghai.aliyuncs.com/batchcompute/myubuntu:0.2"
+          vpc: "192.168.0.0/16 vpc-xxxx"
           userData: "key value"
           reserveOnFail: true
           autoReleaseJob: true
@@ -127,6 +128,7 @@ backend {
           systemDisk: "cloud 50"
           dataDisk: "cloud 250 /home/data/"
           timeout: 3000
+          isv: "abc"
         }
       }
     }
@@ -214,6 +216,17 @@ default-runtime-attributes {
 ```
 - `docker-image-with-tag` - Docker image stored in Alibaba Cloud Container Registry, such as `registry.cn-shanghai.aliyuncs.com/batchcompute/myubuntu:0.2`.
 
+#### vpc
+The `vpc` is used to specify the Virtual Private Cloud (VPC) that the VM belong to, including CIDR-block and vpc-id.
+- `<CIDR-block>` - specify the IP address range of a Virtual Private Cloud (VPC)
+- `vpc-id` - ID of a Virtual Private Cloud (VPC)
+
+```hocon
+ default-runtime-attributes {
+   vpc: "192.168.0.0/16 vpc-xxxxxxxx"
+ }
+```
+
 #### userData
 
 If a runtime cluster is specified, it's possible to pass some environment variables to VM when running BCS jobs.
@@ -264,6 +277,16 @@ The system disk size can support up to 500GB. One can mount another data disk in
    dataDisk: "<disk-type> <disk-size-in-GB> <mount-point>"
  }
 ```
+#### isv
+
+If a BCS ISV is used in the tasks, a runtime attribute name `isv` can be used to specify it.
+
+```hocon
+ default-runtime-attributes {
+   isv: "abc"
+ }
+```
+
 
 ###CallCaching
 BCS supports CallCaching feature when the docker image is from Alibaba Cloud Container Registry.
